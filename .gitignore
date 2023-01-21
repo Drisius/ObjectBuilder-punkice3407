@@ -17,3 +17,7 @@ workerswfs/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
+/.vs/ObjectBuilder-punkice3407/v15
+/.vs/ProjectSettings.json
+/.vs/VSWorkspaceState.json
+/.vs/slnx.sqlite

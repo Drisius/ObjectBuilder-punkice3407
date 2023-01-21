@@ -242,27 +242,34 @@ package otlib.things
             var walking:FrameGroup = getFrameGroup(FrameGroupType.WALKING);
             if(!normal && !walking)
                 return;
-                
+            
+            var mountPattern:uint = walking.patternZ;
+
             if (removeMounts)
             {
                 idle.patternZ = 1
                 walking.patternZ = 1
             }
 
-            var normal:FrameGroup = idle.clone();
-            normal.frames = 3;
-
             var spriteIndex:Vector.<uint> = new Vector.<uint>();
 
             var frameSpriteLength:uint = countSpritesInFrame(idle, 0);
             for (var spriteId:uint = 0; spriteId < frameSpriteLength; spriteId++)
-                spriteIndex.push(idle.spriteIndex[spriteId])
+                {
+                    spriteIndex.push(idle.spriteIndex[spriteId]);
+                }
 
-            for (spriteId = 0; spriteId < frameSpriteLength; spriteId++)
-                spriteIndex.push(walking.spriteIndex[spriteId])
+            // var walkingFramesLength:uint = walking.spriteIndex.length
 
-            var walkingFramesLength:uint = walking.spriteIndex.length
-            if (walkingFramesLength > frameSpriteLength * 4)
+            for (var frame:uint = 0; frame < walking.frames * mountPattern; frame += mountPattern)
+            {
+                var frameSpriteLengthWalking:uint = countSpritesInFrame(walking, frame);
+                for (spriteId = frameSpriteLengthWalking * frame; spriteId < frameSpriteLengthWalking * frame + frameSpriteLengthWalking; spriteId++)
+                {
+                    spriteIndex.push(walking.spriteIndex[spriteId]);
+                }
+            }
+            /* if (walkingFramesLength > frameSpriteLength * 4)
             {
                 // Check for fourth frame in walking
                 for (spriteId = frameSpriteLength * 4; spriteId < (frameSpriteLength * 4) + frameSpriteLength; spriteId++)
@@ -279,7 +286,10 @@ package otlib.things
                 // Add first frame in walking
                 for (spriteId = 0; spriteId < frameSpriteLength; spriteId++)
                 spriteIndex.push(walking.spriteIndex[spriteId]) 
-            }
+            } */
+
+            var normal:FrameGroup = idle.clone();
+            normal.frames = 1 + walking.frames;
 
             normal.spriteIndex = spriteIndex;
             normal.isAnimation = true;
